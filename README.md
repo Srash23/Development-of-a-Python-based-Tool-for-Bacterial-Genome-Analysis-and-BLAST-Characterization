@@ -1,68 +1,48 @@
-# Bacterial Genome ORF Analysis and BLAST Pipeline
+# ORF Discovery and Functional Annotation via BLAST
 
-## Introduction
-This project develops a Python-based bioinformatics tool for the analysis of bacterial genomes, enabling:
+This repository presents a streamlined Python-based pipeline for identifying open reading frames (ORFs) from genomic DNA sequences, computing their molecular weights, and annotating them using NCBI’s remote BLAST API. The project is designed for quick, scriptable protein discovery and functional analysis from nucleotide data.
 
-1. Identification of Open Reading Frames (ORFs).
-2. Translation of ORFs into protein sequences.
-3. Molecular mass calculation of proteins.
-4. BLAST (Basic Local Alignment Search Tool) analysis to find homologous sequences in public databases.
+## Project Overview
+The goal of this project is to:
+- Parse and process genomic FASTA files
+- Detect protein-coding ORFs on both strands (≥50 codons)
+- Compute molecular weight of translated proteins
+- Filter sequences for optimal BLAST performance
+- Query the NCBI `nr` database for functional annotation
+- Export structured results to a CSV
 
-The sequence analyzed in this project is the complete synthetic genome of Mycoplasma mycoides JCVI-syn1.0, a milestone project by the Craig Venter Institute. Studying this genome provides insights into the minimal genetic requirements for life, contributing to biotechnology and synthetic biology.
+## Pipeline Summary
 
-## Why Is This Important?
-Understanding bacterial genome structure is crucial for:
+### 1. Input Handling
+- Load FASTA files using Biopython’s `SeqIO`
+- Handle single or multi-record nucleotide datasets
 
-**🔬 Gene Identification –** Discovering essential genes in synthetic and natural bacterial genomes.
+### 2. ORF Identification
+- Search all 6 reading frames using standard codon table
+- Filter sequences based on protein length
 
-**🧬 Synthetic Biology & Biotechnology –** Engineering minimal genomes for research and industrial applications.
+### 3. Molecular Mass Calculation
+- Compute protein molecular weight (in kDa) using Biopython utilities
 
-**🏥 Medicine –** Understanding pathogenic bacteria and developing targeted therapies.
+### 4. Functional Annotation
+- Perform `blastp` remotely using `NCBIWWW.qblast`
+- Extract top 5 hits and associated E-values
 
-**🌍 Evolutionary Biology –** Comparing synthetic genomes with natural bacteria to explore evolutionary relationships.
+### 5. Output Generation
+- Save ORF sequence, molecular weight, and BLAST annotations into a CSV
 
-## Workflow
-![Pipeline Workflow - visual selection](https://github.com/user-attachments/assets/f5a8d445-54b4-479c-913d-82633e5fe34c)
+## Input/Output Description
 
-## Key Features
-1. ORF Detection – Finds potential coding sequences in bacterial genomes.
-2. Protein Translation – Converts ORFs into protein sequences.
-3. Molecular Mass Calculation – Determines the size of translated proteins.
-4. BLAST Analysis – Identifies homologous proteins in global databases.
-5. Automated CSV Reports – Saves results for further study.
+| File            | Description                                      |
+|-----------------|--------------------------------------------------|
+| `sequence.fasta`| Input genomic or contig-level FASTA sequence     |
+| `results.csv`   | Output file containing ORF, mass, and BLAST hits |
 
-## Installation and Setup
+## Tech Stack
 
-**This project requires Python 3.7+ and the following dependencies:**
+- **Language**: Python 3
+- **Libraries**: Biopython, requests, csv
+- **Tools**: NCBI BLAST API (`qblast`)
 
-**Dependencies**
-
-Install the required packages using:
-
-pip install biopython requests
-
-**Ensure you have:**
-
-Genome sequence file (.fasta)
-
-Internet access for BLAST queries.
-
-## Key Insights
-
-**1. Gene Identification –** Detected multiple ORFs, highlighting potential coding regions.
-
-**2. Protein Characterization –** Translated sequences vary in molecular mass, useful for functional classification.
-
-**3. Homology Detection –** BLAST analysis reveals evolutionary relationships with known bacterial proteins.
-
-## Biological Significance
-
-**1. Minimal Genome Analysis –** Identifies essential genes for bacterial survival.
-   
-**3. Comparative Genomics –** Compares synthetic bacterial genomes to natural species.
-   
-**5. Pathogen Research –** Can be extended to study virulent genes in pathogens.
-
-## Conclusion
-
-This Bacterial Genome ORF Analysis and BLAST Pipeline provides an automated bioinformatics workflow for identifying protein-coding genes, computing molecular properties, and searching for homologous sequences. The study of synthetic bacterial genomes like Mycoplasma mycoides JCVI-syn1.0 enhances our understanding of minimal life forms and accelerates biotechnological advancements.
+## License
+MIT License
